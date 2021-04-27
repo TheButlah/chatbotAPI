@@ -1,11 +1,14 @@
 #!/usr/local/bin/python3
 import os
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' 
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+from dotenv import load_dotenv
+load_dotenv()  # take environment variables from .env
+
 from flask import Flask, abort, jsonify, request
 from flask_cors import CORS, cross_origin
-from tensorflow import keras
 import gpt_2_simple as gpt2
-from .run_generation import generate_text
+
+# from run_generation import generate_text
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -17,15 +20,14 @@ def getResponse(msg, prefixHistory):
     sess = gpt2.start_tf_sess()
     gpt2.load_gpt2(sess, run_name='run1')
     prefixHistory += "Person: " + msg + "\n" + "Aryeh Bookbinder:"
-    print(prefixHistory)
+    app.logger.debug("Generating from prefix:", prefixHistory)
     text = gpt2.generate(sess, length=200,temperature=0.6,prefix=prefixHistory, return_as_list=True)[0]
-    print(prefixHistory,  text)
     text = text[len(prefixHistory):]
-    print(prefixHistory,  text)
-    botResponse = "Aryeh Bookbinder:" + text
-    #prefixHistory += botResponse
-    end = text.find("Person") 
-    return (text[:end-1]), prefixHistory
+    end = text.find("Person")
+
+    response = text[:end-1]
+    app.logger.debug("Responding with:", response)
+    return response, prefixHistory
 
 @app.route("/generate", methods=['POST'])
 @cross_origin()
@@ -45,10 +47,9 @@ def get_gen():
         #     model_name_or_path=model
         # )
         response, _ = getResponse(data['text'], data['prefixHistory'])
-        print(response)
         #result = response.replace("Aryeh Bookbinder", "Aryeh Bot")
         return jsonify({'result': "Aryeh Bookbinder:" + str(response)})
 
-@app.route('/test', methods=['POST'])
+@app.route('/test')
 def test_response():
-    return 'Done', 201 
+    return 'Done', 201
