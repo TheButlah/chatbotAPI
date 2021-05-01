@@ -1,4 +1,4 @@
-FROM tensorflow/tensorflow:1.15.2-gpu
+FROM tensorflow/tensorflow:1.15.5-gpu
 
 RUN apt-get update \
     && apt-get install -y python3-venv \
