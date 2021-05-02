@@ -8,6 +8,10 @@ RUN mkdir /opt/chatbot
 
 WORKDIR /opt/chatbot
 
+# Allows us to use the CUDA JIT compiler cache
+# 2 GiB
+ENV CUDA_CACHE_MAXSIZE="2147483648"
+
 # Equivalent to creating and sourcing a venv
 ENV VIRTUAL_ENV=/opt/chatbot/.venv
 RUN python3 -m venv --system-site-packages $VIRTUAL_ENV

@@ -14,6 +14,8 @@ import tensorflow as tf
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
+
+graph = tf.get_default_graph()
 gpt2.download_gpt2(model_name="355M")
 print("GPT downloaded")
 sess = gpt2.start_tf_sess()
@@ -21,7 +23,7 @@ print("session started")
 gpt2.load_gpt2(sess, run_name='run1')
 print("checkpoint loaded")
 
-graph = tf.get_default_graph()
+
 
 
 def getResponse(msg, prefixHistory):
