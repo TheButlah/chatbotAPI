@@ -1,2 +1,4 @@
-.git
-.venv
+.git/
+.venv/
+__pycache__/
+models/
