@@ -16,8 +16,11 @@ cors = CORS(app)
 app.config["CORS_HEADERS"] = "Content-Type"
 
 graph = tf.get_default_graph()
-gpt2.download_gpt2(model_name="355M")
-print("GPT downloaded")
+if os.path.exists("models"):
+    gpt2.download_gpt2(model_name="355M")
+    print("GPT downloaded")
+else:
+    print("GPT found from file")
 sess = gpt2.start_tf_sess()
 print("session started")
 gpt2.load_gpt2(sess, run_name="run1")
