@@ -28,4 +28,4 @@ COPY . /opt/chatbot
 
 EXPOSE 5000
 
-CMD ["flask", "run", "--host=0.0.0.0", "--no-reload"]
+CMD ["flask", "run", "--host=0.0.0.0", "--port=80", "--no-reload"]

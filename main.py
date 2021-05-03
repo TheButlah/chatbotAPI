@@ -58,4 +58,4 @@ def get_gen():
 
 @app.route("/test")
 def test_response():
-    return "Done", 201
+    return "Done", 200
